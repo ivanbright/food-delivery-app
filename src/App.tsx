@@ -8,11 +8,18 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { HelpPage } from './pages/HelpPage';
 import { LoginPage } from './pages/LoginPage';
+import { LocationProvider } from "./contexts/LocationContext.tsx";
 
-const App: React.FC = () => {
+import { AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import { SignupPage } from './pages/SignupPage';
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
   return (
-    <Router>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Layout />}>
           <Route index element={<LandingPage />} />
           <Route path="restaurants" element={<RestaurantsPage />} />
@@ -22,8 +29,19 @@ const App: React.FC = () => {
           <Route path="help" element={<HelpPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
-    </Router>
+    </AnimatePresence>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <LocationProvider>
+      <Router>
+        <AnimatedRoutes />
+      </Router>
+    </LocationProvider>
   );
 }
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Search, HelpCircle, CreditCard, User, Tag, Mail, MessageSquare, ChevronDown } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
@@ -36,7 +37,12 @@ export const HelpPage: React.FC = () => {
     };
 
     return (
-        <div className="bg-gray-50 min-h-screen pb-20">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="bg-gray-50 min-h-screen pb-20"
+        >
             <div className="bg-primary pt-12 pb-24 text-center px-4 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/food.png')]"></div>
                 <div className="relative z-10 container mx-auto max-w-2xl">
@@ -115,6 +121,6 @@ export const HelpPage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };

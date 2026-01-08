@@ -1,11 +1,17 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Package, Clock, CheckCircle, RefreshCcw, MapPin } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 
 export const OrdersPage: React.FC = () => {
     return (
-        <div className="bg-gray-50 min-h-screen pb-20">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="bg-gray-50 min-h-screen pb-20"
+        >
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-8">My Orders</h1>
 
@@ -122,6 +128,6 @@ export const OrdersPage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };

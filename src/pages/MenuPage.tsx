@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Star, Clock, MapPin, Plus } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { CartSidebar } from '../components/CartSidebar';
@@ -35,7 +36,12 @@ export const MenuPage: React.FC = () => {
     ];
 
     return (
-        <div className="bg-gray-50 min-h-screen pb-20">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="bg-gray-50 min-h-screen pb-20"
+        >
             {/* Banner */}
             <div className="h-64 md:h-80 relative">
                 <img src={restaurant.banner} alt={restaurant.name} className="w-full h-full object-cover" />
@@ -119,6 +125,6 @@ export const MenuPage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
