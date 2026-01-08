@@ -1,11 +1,17 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '../components/ui/Button';
 import { UtensilsCrossed, Mail, Lock, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const LoginPage: React.FC = () => {
     return (
-        <div className="min-h-screen flex bg-white">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="min-h-screen flex bg-white"
+        >
             {/* Left Side - Form */}
             <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24 relative z-10 w-full lg:w-1/2">
                 <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -72,7 +78,7 @@ export const LoginPage: React.FC = () => {
 
                         <p className="text-center text-sm text-gray-600">
                             Don't have an account? {' '}
-                            <a href="#" className="font-bold text-primary hover:underline">Create account</a>
+                            <Link to="/signup" className="font-bold text-primary hover:underline">Create account</Link>
                         </p>
                     </div>
                 </div>
@@ -105,7 +111,7 @@ export const LoginPage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

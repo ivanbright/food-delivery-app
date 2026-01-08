@@ -1,14 +1,11 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '../components/ui/Button';
 import { MapPin, ArrowRight, Clock, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SearchBox from "../components/SearchBox.tsx";
-import MapView from "../components/MapView.tsx";
 
 
-type Location = {
-    lat: number;
-    lon: number;}
 type RelatedPlaces = {
     lat: number;
     lon: number;
@@ -16,10 +13,10 @@ type RelatedPlaces = {
 }
 
 export const LandingPage: React.FC = () => {
-    const [location, setLocation] = useState<Location|null>(null);
+    // const [location, setLocation] = useState<Location | null>(null);
     const [relatedPlaces, setRelatedPlaces] = useState<RelatedPlaces[]>([]);
 
-    const searchPlace = async (query:string) => {
+    const searchPlace = async (query: string) => {
         // 1️⃣ Find searched place
         const res = await fetch(
             `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`
@@ -31,13 +28,13 @@ export const LandingPage: React.FC = () => {
         const lat = parseFloat(place.lat);
         const lon = parseFloat(place.lon);
 
-        setLocation({ lat, lon });
+        // setLocation({ lat, lon });
 
         // 2️⃣ Find related places
         fetchRelatedPlaces(lat, lon);
     };
 
-    const fetchRelatedPlaces = async (lat:number, lon:number) => {
+    const fetchRelatedPlaces = async (lat: number, lon: number) => {
         const query = `
       [out:json];
       (
@@ -53,7 +50,7 @@ export const LandingPage: React.FC = () => {
 
         const data = await res.json();
 
-        const places = data.elements.map(el => ({
+        const places = data.elements.map((el: any) => ({
             lat: el.lat,
             lon: el.lon,
             name: el.tags?.name || "Unnamed place",
@@ -64,7 +61,12 @@ export const LandingPage: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-col min-h-screen"
+        >
             {/* Hero Section */}
             <section className="relative bg-gray-900 text-white py-20 lg:py-32 overflow-hidden">
                 <div className="absolute inset-0 z-0">
@@ -85,7 +87,7 @@ export const LandingPage: React.FC = () => {
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center justify-center max-w-2xl mx-auto gap-4">
-                       <SearchBox onSearch={searchPlace} />
+                        <SearchBox onSearch={searchPlace} />
                         <Link to="/restaurants" className='w-full md:w-auto'>
                             <Button size="lg" className="w-full md:w-auto h-14 rounded-xl">
                                 Find Food
@@ -186,7 +188,7 @@ export const LandingPage: React.FC = () => {
                     </div>
                 </div>
             </section>
-        </div>
+        </motion.div>
     );
 };
 

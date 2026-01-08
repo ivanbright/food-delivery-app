@@ -1,13 +1,16 @@
 import { MapPin } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "../contexts/LocationContext.tsx";
 
 type Suggestion = {
     display_name: string;
-    lat: string;
-    lon: string;
+    lat: number | null;
+    lon: number | null;
 };
 
 export default function SearchBox({ onSearch }: { onSearch: (query: string) => void }) {
+
+    const { setLocation } = useLocation();
     const [query, setQuery] = useState("");
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
     const [loading, setLoading] = useState(false);
@@ -47,6 +50,21 @@ export default function SearchBox({ onSearch }: { onSearch: (query: string) => v
         return () => clearTimeout(timer);
     }, [query, isSelected]);
 
+
+
+    const handleSelect = (selected: Suggestion) => {
+        setQuery(selected.display_name);
+        setSuggestions([]);
+        setIsSelected(true);
+
+        setLocation({
+            display_name: selected.display_name,
+            lat: Number(selected.lat),
+            lon: Number(selected.lon),
+        });
+
+        onSearch(selected.display_name);
+    };
     // Keyboard navigation
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (!suggestions.length) return;
@@ -61,11 +79,8 @@ export default function SearchBox({ onSearch }: { onSearch: (query: string) => v
             e.preventDefault();
         } else if (e.key === "Enter") {
             if (selectedIndex >= 0) {
-                const selected = suggestions[selectedIndex];
-                setQuery(selected.display_name);
-                setSuggestions([]);
-                setIsSelected(true); // prevent further fetch
-                onSearch(selected.display_name);
+                handleSelect(suggestions[selectedIndex]);
+
             } else {
                 onSearch(query);
             }
@@ -96,7 +111,7 @@ export default function SearchBox({ onSearch }: { onSearch: (query: string) => v
                 }}
                 onKeyDown={handleKeyDown}
                 placeholder="Enter delivery address"
-                className="w-full h-14 pl-12 pr-4 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-primary/30"
+                className="w-full h-14 pl-12 pr-4 truncate rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-primary/30"
             />
 
             {/* Loader */}
@@ -124,9 +139,8 @@ export default function SearchBox({ onSearch }: { onSearch: (query: string) => v
                                     setIsSelected(true);
                                     onSearch(s.display_name);
                                 }}
-                                className={`px-4 py-3 cursor-pointer ${
-                                    idx === selectedIndex ? "bg-primary/20" : "hover:bg-gray-100"
-                                }`}
+                                className={`px-4 py-3 cursor-pointer ${idx === selectedIndex ? "bg-primary/20" : "hover:bg-gray-100"
+                                    }`}
                             >
                                 {s.display_name}
                             </li>

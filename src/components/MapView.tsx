@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 
-export default function MapView({ location, relatedPlaces }) {
-    const mapRef = useRef(null);
+export default function MapView({ location, relatedPlaces }: { location: any, relatedPlaces: any[] }) {
+    const mapRef = useRef<any>(null);
     const markersRef = useRef(L.layerGroup());
 
     useEffect(() => {
